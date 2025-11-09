@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>VAKR Learning Style Analyzer - Multilingual (Manual, Complete)</title>
+    <title>Learning Style Analyzer</title>
     <style>
         :root {
             --bg-primary: #121212;
@@ -76,10 +76,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  (function(){
-    emailjs.init("PAj-7Ybl1xhNLJwVO"); // replace with your actual Public Key
-  })();
+(function() {
+  emailjs.init("PAj-7Ybl1xhNLJwVO"); // your Public Key
+})();
 </script>
+
 
 </head>
 <body class="dark-mode">
@@ -94,7 +95,7 @@
 
     <div class="container">
         <div id="login-page">
-            <h1 id="login-heading">Welcome to VAKR Analyzer</h1>
+            <h1 id="login-heading">Welcome to VIDIT</h1>
             <p id="login-subtitle">Please enter a username and select your preferred language to begin.</p>
             <form id="login-form">
                 <label for="username" id="username-label">Username:</label>
@@ -530,25 +531,30 @@ document.getElementById('retake-quiz-btn').addEventListener('click', function(){
     renderQuestion(currentQuestionIndex);
 });
 
-document.getElementById('share-results-btn').addEventListener('click', async function(){
+document.getElementById('share-results-btn').addEventListener('click', async function() {
   const email = prompt("Enter the email address you want to share your results with:");
   if (!email) return;
 
-  const link = "https://yourwebsite.com/vidit-results"; // Replace with your actual result link
+  const dominantStyle = calculateResults();
+  const result = LEARNER_STRATEGIES[dominantStyle];
 
   const templateParams = {
+    username: username,
     email: email,
-    message: `Hey ${username} took the Vidit: Learning Style Identifier Quiz!\n\nCheck out my result and learning strategies: ${link}`
+    style: result.name,
+    description: result.description,
+    strategies: result.strategies.join("\\n- ")
   };
 
   try {
     await emailjs.send("service_y3kiaab", "template_62xxcoe", templateParams);
-    alert("✅ Email sent successfully!");
+    alert("✅ Result sent successfully!");
   } catch (error) {
     console.error(error);
-    alert("❌ Failed to send email. Please check your EmailJS settings.");
+    alert("❌ Failed to send email. Please check your EmailJS credentials.");
   }
 });
+
 
 
 /* TTS */
